@@ -8,6 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
+//TO DO
+//6. Kontrolka webBrowser przelicza się dopiero po zmianie rozmiaru okna - naprawić lub zdefiniować stały rozmiar (?)
+//8. Po kliknięciu przycisku Enter, aby przejść do nowej linii odstępy pomiędzy wierszem jest większy niż normalnie
+//(dzieję się tak, ponieważ w kontrolce webBrowser przycisk enter wstawia znacznik <p>, a Shift + Enter wstawia <br>
+
+//UWAGI DANIELA
+//gubi się odstęp pomiędzy wierszami - na razie wystarczy, aby automatycznie ustalił się optymalny odstęp pomiędzy wierszami
+//podczas wklejania treści z obrazkami trzeba usunąć z treści obrazki
+
 namespace BaseForCustomControls.customControls
 {
     public partial class CustomNotes : UserControl
@@ -20,17 +30,16 @@ namespace BaseForCustomControls.customControls
             AttachEventHandlers();
             InitializeWebBrowser();
             AdjustWebBrowserMargin();
+            InitializeTextStyleDropdown();
         }
 
         private void InitializeWebBrowser()
         {
-            // Załadowanie niestandardowego dokumentu HTML do kontrolki z Designera
             webBrowser.AllowWebBrowserDrop = false;
             webBrowser.IsWebBrowserContextMenuEnabled = false;
             webBrowser.ScriptErrorsSuppressed = true;
             webBrowser.WebBrowserShortcutsEnabled = false;
 
-            // Ładowanie edytowalnego dokumentu HTML
             webBrowser.DocumentText = @"
         <html>
             <head>
@@ -44,7 +53,6 @@ namespace BaseForCustomControls.customControls
             <body contenteditable='true'></body>
         </html>";
 
-            // Podłączenie zdarzeń
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.PreviewKeyDown += WebBrowser_PreviewKeyDown;
         }
@@ -76,6 +84,44 @@ namespace BaseForCustomControls.customControls
             if (webBrowser != null && toolStrip != null)
             {
                 webBrowser.Margin = new Padding(0, toolStrip.Height, 0, 0);
+            }
+        }
+
+        private void InitializeTextStyleDropdown()
+        {
+            ToolStripMenuItem normalText = new ToolStripMenuItem("Normalny tekst");
+            normalText.Font = new Font("Arial", 12);
+            normalText.Click += (sender, e) => SetTextStyle("3");// rozmiar 12
+
+            ToolStripMenuItem heading1 = new ToolStripMenuItem("Nagłówek 1");
+            heading1.Font = new Font("Arial", 20);
+            heading1.Click += (sender, e) => SetTextStyle("7");// rozmiar 20
+
+            ToolStripMenuItem heading2 = new ToolStripMenuItem("Nagłówek 2");
+            heading2.Font = new Font("Arial", 18);
+            heading2.Click += (sender, e) => SetTextStyle("6");// rozmiar 18
+
+            ToolStripMenuItem heading3 = new ToolStripMenuItem("Nagłówek 3");
+            heading3.Font = new Font("Arial", 16);
+            heading3.Click += (sender, e) => SetTextStyle("5");// rozmiar 16
+
+            ToolStripMenuItem heading4 = new ToolStripMenuItem("Nagłówek 4");
+            heading4.Font = new Font("Arial", 14);
+            heading4.Click += (sender, e) => SetTextStyle("4");// rozmiar 14
+
+
+            buttonTextStyles.DropDownItems.Add(normalText);
+            buttonTextStyles.DropDownItems.Add(heading1);
+            buttonTextStyles.DropDownItems.Add(heading2);
+            buttonTextStyles.DropDownItems.Add(heading3);
+            buttonTextStyles.DropDownItems.Add(heading4);
+        }
+
+        private void SetTextStyle(string tagName)
+        {
+            if (webBrowser.Document != null)
+            {
+                ExecuteCommand("fontsize", tagName);
             }
         }
 
