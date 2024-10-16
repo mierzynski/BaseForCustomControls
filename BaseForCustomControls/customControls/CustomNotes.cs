@@ -65,6 +65,8 @@ namespace BaseForCustomControls.customControls
             buttonNumberedList.Click += ButtonNumberedList_Click;
             buttonIndent.Click += ButtonIndent_Click;
             buttonOutdent.Click += ButtonOutdent_Click;
+            buttonInsertSeparator.Click += ButtonInsertSeparator_Click;
+            buttonHighlightColor.Click += ButtonHighlightColor_Click;
 
             toolStrip.SizeChanged += ToolStrip_SizeChanged;
         }
@@ -73,14 +75,12 @@ namespace BaseForCustomControls.customControls
         {
             if (webBrowser != null && toolStrip != null)
             {
-                // Ustawiamy margines górny WebBrowsera równy wysokości ToolStripa
                 webBrowser.Margin = new Padding(0, toolStrip.Height, 0, 0);
             }
         }
 
         private void ToolStrip_SizeChanged(object sender, EventArgs e)
         {
-            // Za każdym razem, gdy rozmiar ToolStripa się zmieni, aktualizujemy margines WebBrowsera
             AdjustWebBrowserMargin();
         }
 
@@ -162,6 +162,21 @@ namespace BaseForCustomControls.customControls
                 string script = $"document.body.style.lineHeight = '{lineHeight}';";
                 webBrowser.Document.InvokeScript("eval", new object[] { script });
             }
+        }
+
+        private void ButtonHighlightColor_Click(object sender, EventArgs e)
+        {
+            ColorDialog colorDialog = new ColorDialog();
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                string color = ColorTranslator.ToHtml(colorDialog.Color);
+                ExecuteCommand("hiliteColor", color);
+            }
+        }
+
+        private void ButtonInsertSeparator_Click(object sender, EventArgs e)
+        {
+            ExecuteCommand("insertHorizontalRule");
         }
 
         private void ButtonBold_Click(object sender, EventArgs e)
