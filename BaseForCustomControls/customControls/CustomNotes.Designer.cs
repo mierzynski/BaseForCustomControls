@@ -50,43 +50,60 @@
             this.buttonInsertSeparator = new System.Windows.Forms.ToolStripButton();
             this.buttonHighlightColor = new System.Windows.Forms.ToolStripButton();
             this.buttonTextStyles = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.buttonUndo = new System.Windows.Forms.ToolStripButton();
+            this.buttonRedo = new System.Windows.Forms.ToolStripButton();
+            this.buttonGetContent = new System.Windows.Forms.ToolStripButton();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // webBrowser
             // 
-            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.webBrowser.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.webBrowser.MinimumSize = new System.Drawing.Size(30, 31);
+            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser.Location = new System.Drawing.Point(0, 33);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser.Name = "webBrowser";
-            this.webBrowser.Size = new System.Drawing.Size(1044, 629);
+            this.webBrowser.Size = new System.Drawing.Size(696, 376);
             this.webBrowser.TabIndex = 0;
             // 
             // toolStrip
             // 
-            this.toolStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.toolStrip.BackColor = System.Drawing.SystemColors.Control;
+            this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buttonUndo,
+            this.buttonRedo,
+            this.toolStripSeparator5,
+            this.buttonTextStyles,
+            this.toolStripSeparator1,
             this.buttonBold,
             this.buttonItalic,
             this.buttonUnderline,
             this.buttonChangeColor,
+            this.buttonHighlightColor,
+            this.toolStripSeparator2,
             this.buttonAlignLeft,
             this.buttonAlignCenter,
             this.buttonAlignRight,
             this.buttonJustify,
+            this.toolStripSeparator3,
             this.buttonBulletList,
             this.buttonNumberedList,
             this.buttonIndent,
             this.buttonOutdent,
             this.buttonLineSpacing,
+            this.toolStripSeparator4,
             this.buttonInsertSeparator,
-            this.buttonHighlightColor,
-            this.buttonTextStyles});
+            this.buttonGetContent});
+            this.toolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.toolStrip.Size = new System.Drawing.Size(1044, 33);
+            this.toolStrip.Padding = new System.Windows.Forms.Padding(5);
+            this.toolStrip.Size = new System.Drawing.Size(696, 33);
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -96,7 +113,7 @@
             this.buttonBold.Image = ((System.Drawing.Image)(resources.GetObject("buttonBold.Image")));
             this.buttonBold.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonBold.Name = "buttonBold";
-            this.buttonBold.Size = new System.Drawing.Size(34, 28);
+            this.buttonBold.Size = new System.Drawing.Size(23, 20);
             this.buttonBold.Text = "Pogrubienie";
             // 
             // buttonItalic
@@ -105,7 +122,7 @@
             this.buttonItalic.Image = ((System.Drawing.Image)(resources.GetObject("buttonItalic.Image")));
             this.buttonItalic.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonItalic.Name = "buttonItalic";
-            this.buttonItalic.Size = new System.Drawing.Size(34, 28);
+            this.buttonItalic.Size = new System.Drawing.Size(23, 20);
             this.buttonItalic.Text = "Kursywa";
             // 
             // buttonUnderline
@@ -114,7 +131,7 @@
             this.buttonUnderline.Image = ((System.Drawing.Image)(resources.GetObject("buttonUnderline.Image")));
             this.buttonUnderline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonUnderline.Name = "buttonUnderline";
-            this.buttonUnderline.Size = new System.Drawing.Size(34, 28);
+            this.buttonUnderline.Size = new System.Drawing.Size(23, 20);
             this.buttonUnderline.Text = "Podkreślenie";
             // 
             // buttonChangeColor
@@ -123,7 +140,7 @@
             this.buttonChangeColor.Image = ((System.Drawing.Image)(resources.GetObject("buttonChangeColor.Image")));
             this.buttonChangeColor.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonChangeColor.Name = "buttonChangeColor";
-            this.buttonChangeColor.Size = new System.Drawing.Size(34, 28);
+            this.buttonChangeColor.Size = new System.Drawing.Size(23, 20);
             this.buttonChangeColor.Text = "Kolor tekstu";
             // 
             // buttonAlignLeft
@@ -132,7 +149,7 @@
             this.buttonAlignLeft.Image = ((System.Drawing.Image)(resources.GetObject("buttonAlignLeft.Image")));
             this.buttonAlignLeft.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonAlignLeft.Name = "buttonAlignLeft";
-            this.buttonAlignLeft.Size = new System.Drawing.Size(34, 28);
+            this.buttonAlignLeft.Size = new System.Drawing.Size(23, 20);
             this.buttonAlignLeft.Text = "Wyrównanie do lewej";
             // 
             // buttonAlignCenter
@@ -141,7 +158,7 @@
             this.buttonAlignCenter.Image = ((System.Drawing.Image)(resources.GetObject("buttonAlignCenter.Image")));
             this.buttonAlignCenter.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonAlignCenter.Name = "buttonAlignCenter";
-            this.buttonAlignCenter.Size = new System.Drawing.Size(34, 28);
+            this.buttonAlignCenter.Size = new System.Drawing.Size(23, 20);
             this.buttonAlignCenter.Text = "Wyrównanie do środka";
             // 
             // buttonAlignRight
@@ -150,7 +167,7 @@
             this.buttonAlignRight.Image = ((System.Drawing.Image)(resources.GetObject("buttonAlignRight.Image")));
             this.buttonAlignRight.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonAlignRight.Name = "buttonAlignRight";
-            this.buttonAlignRight.Size = new System.Drawing.Size(34, 28);
+            this.buttonAlignRight.Size = new System.Drawing.Size(23, 20);
             this.buttonAlignRight.Text = "Wyrównanie do prawej";
             // 
             // buttonJustify
@@ -159,7 +176,7 @@
             this.buttonJustify.Image = ((System.Drawing.Image)(resources.GetObject("buttonJustify.Image")));
             this.buttonJustify.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonJustify.Name = "buttonJustify";
-            this.buttonJustify.Size = new System.Drawing.Size(34, 28);
+            this.buttonJustify.Size = new System.Drawing.Size(23, 20);
             this.buttonJustify.Text = "Justowanie";
             // 
             // buttonBulletList
@@ -168,7 +185,7 @@
             this.buttonBulletList.Image = ((System.Drawing.Image)(resources.GetObject("buttonBulletList.Image")));
             this.buttonBulletList.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonBulletList.Name = "buttonBulletList";
-            this.buttonBulletList.Size = new System.Drawing.Size(34, 28);
+            this.buttonBulletList.Size = new System.Drawing.Size(23, 20);
             this.buttonBulletList.Text = "Lista punktowana";
             // 
             // buttonNumberedList
@@ -177,7 +194,7 @@
             this.buttonNumberedList.Image = ((System.Drawing.Image)(resources.GetObject("buttonNumberedList.Image")));
             this.buttonNumberedList.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonNumberedList.Name = "buttonNumberedList";
-            this.buttonNumberedList.Size = new System.Drawing.Size(34, 28);
+            this.buttonNumberedList.Size = new System.Drawing.Size(23, 20);
             this.buttonNumberedList.Text = "Lista numerowana";
             // 
             // buttonIndent
@@ -186,7 +203,7 @@
             this.buttonIndent.Image = ((System.Drawing.Image)(resources.GetObject("buttonIndent.Image")));
             this.buttonIndent.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonIndent.Name = "buttonIndent";
-            this.buttonIndent.Size = new System.Drawing.Size(34, 28);
+            this.buttonIndent.Size = new System.Drawing.Size(23, 20);
             this.buttonIndent.Text = "Zwiększ wcięcie";
             // 
             // buttonOutdent
@@ -195,7 +212,7 @@
             this.buttonOutdent.Image = ((System.Drawing.Image)(resources.GetObject("buttonOutdent.Image")));
             this.buttonOutdent.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonOutdent.Name = "buttonOutdent";
-            this.buttonOutdent.Size = new System.Drawing.Size(34, 28);
+            this.buttonOutdent.Size = new System.Drawing.Size(23, 20);
             this.buttonOutdent.Text = "Zmniejsz wcięcie";
             // 
             // buttonLineSpacing
@@ -208,25 +225,25 @@
             this.buttonLineSpacing.Image = ((System.Drawing.Image)(resources.GetObject("buttonLineSpacing.Image")));
             this.buttonLineSpacing.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonLineSpacing.Name = "buttonLineSpacing";
-            this.buttonLineSpacing.Size = new System.Drawing.Size(42, 28);
+            this.buttonLineSpacing.Size = new System.Drawing.Size(29, 20);
             this.buttonLineSpacing.Text = "Odstępy pomiędzy wierszami i akapitami";
             // 
             // pojedyńczyToolStripMenuItem
             // 
             this.pojedyńczyToolStripMenuItem.Name = "pojedyńczyToolStripMenuItem";
-            this.pojedyńczyToolStripMenuItem.Size = new System.Drawing.Size(138, 34);
+            this.pojedyńczyToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
             this.pojedyńczyToolStripMenuItem.Text = "1,0";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(138, 34);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(89, 22);
             this.toolStripMenuItem2.Text = "1,5";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(138, 34);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(89, 22);
             this.toolStripMenuItem3.Text = "2,0";
             // 
             // buttonInsertSeparator
@@ -235,7 +252,7 @@
             this.buttonInsertSeparator.Image = ((System.Drawing.Image)(resources.GetObject("buttonInsertSeparator.Image")));
             this.buttonInsertSeparator.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonInsertSeparator.Name = "buttonInsertSeparator";
-            this.buttonInsertSeparator.Size = new System.Drawing.Size(34, 28);
+            this.buttonInsertSeparator.Size = new System.Drawing.Size(23, 20);
             this.buttonInsertSeparator.Text = "Separator";
             // 
             // buttonHighlightColor
@@ -244,7 +261,7 @@
             this.buttonHighlightColor.Image = ((System.Drawing.Image)(resources.GetObject("buttonHighlightColor.Image")));
             this.buttonHighlightColor.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonHighlightColor.Name = "buttonHighlightColor";
-            this.buttonHighlightColor.Size = new System.Drawing.Size(34, 28);
+            this.buttonHighlightColor.Size = new System.Drawing.Size(23, 20);
             this.buttonHighlightColor.Text = "Kolor zaznaczenia";
             // 
             // buttonTextStyles
@@ -253,18 +270,74 @@
             this.buttonTextStyles.Image = ((System.Drawing.Image)(resources.GetObject("buttonTextStyles.Image")));
             this.buttonTextStyles.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonTextStyles.Name = "buttonTextStyles";
-            this.buttonTextStyles.Size = new System.Drawing.Size(42, 28);
+            this.buttonTextStyles.Size = new System.Drawing.Size(29, 20);
             this.buttonTextStyles.Text = "Style tekstu";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 23);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 23);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 23);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 23);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 23);
+            // 
+            // buttonUndo
+            // 
+            this.buttonUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonUndo.Image = ((System.Drawing.Image)(resources.GetObject("buttonUndo.Image")));
+            this.buttonUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonUndo.Name = "buttonUndo";
+            this.buttonUndo.Size = new System.Drawing.Size(23, 20);
+            this.buttonUndo.Text = "Cofnij";
+            // 
+            // buttonRedo
+            // 
+            this.buttonRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonRedo.Image = ((System.Drawing.Image)(resources.GetObject("buttonRedo.Image")));
+            this.buttonRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonRedo.Name = "buttonRedo";
+            this.buttonRedo.Size = new System.Drawing.Size(23, 20);
+            this.buttonRedo.Text = "Ponów";
+            // 
+            // buttonGetContent
+            // 
+            this.buttonGetContent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonGetContent.Image = ((System.Drawing.Image)(resources.GetObject("buttonGetContent.Image")));
+            this.buttonGetContent.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonGetContent.Name = "buttonGetContent";
+            this.buttonGetContent.Size = new System.Drawing.Size(23, 20);
+            this.buttonGetContent.Text = "buttonGetContent";
             // 
             // CustomNotes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.webBrowser);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Controls.Add(this.toolStrip);
             this.Name = "CustomNotes";
-            this.Size = new System.Drawing.Size(1044, 629);
+            this.Size = new System.Drawing.Size(696, 409);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -295,5 +368,13 @@
         private System.Windows.Forms.ToolStripButton buttonInsertSeparator;
         private System.Windows.Forms.ToolStripButton buttonHighlightColor;
         private System.Windows.Forms.ToolStripDropDownButton buttonTextStyles;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripButton buttonUndo;
+        private System.Windows.Forms.ToolStripButton buttonRedo;
+        private System.Windows.Forms.ToolStripButton buttonGetContent;
     }
 }

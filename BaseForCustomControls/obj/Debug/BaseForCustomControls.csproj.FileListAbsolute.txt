@@ -20,3 +20,14 @@ C:\Users\dell\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\Ba
 C:\Users\dell\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.csproj.CoreCompileInputs.cache
 C:\Users\dell\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.exe
 C:\Users\dell\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.pdb
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\bin\Debug\BaseForCustomControls.exe.config
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\bin\Debug\BaseForCustomControls.exe
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\bin\Debug\BaseForCustomControls.pdb
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.csproj.AssemblyReference.cache
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.customControls.CustomNotes.resources
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.Form1.resources
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.Properties.Resources.resources
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.csproj.GenerateResource.cache
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.csproj.CoreCompileInputs.cache
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.exe
+C:\Users\user\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.pdb

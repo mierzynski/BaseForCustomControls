@@ -29,7 +29,6 @@ namespace BaseForCustomControls.customControls
             InitializeComponent();
             AttachEventHandlers();
             InitializeWebBrowser();
-            AdjustWebBrowserMargin();
             InitializeTextStyleDropdown();
         }
 
@@ -75,16 +74,11 @@ namespace BaseForCustomControls.customControls
             buttonOutdent.Click += ButtonOutdent_Click;
             buttonInsertSeparator.Click += ButtonInsertSeparator_Click;
             buttonHighlightColor.Click += ButtonHighlightColor_Click;
+            buttonUndo.Click += ButtonUndo_Click;
+            buttonRedo.Click += ButtonRedo_Click;
 
-            toolStrip.SizeChanged += ToolStrip_SizeChanged;
-        }
-
-        private void AdjustWebBrowserMargin()
-        {
-            if (webBrowser != null && toolStrip != null)
-            {
-                webBrowser.Margin = new Padding(0, toolStrip.Height, 0, 0);
-            }
+            //TESTY POBIERANIA TREŚCI Z KONTROLKI WEBBROWSER
+            buttonGetContent.Click += ButtonGetContent_Click;
         }
 
         private void InitializeTextStyleDropdown()
@@ -117,17 +111,29 @@ namespace BaseForCustomControls.customControls
             buttonTextStyles.DropDownItems.Add(heading4);
         }
 
+        //TESTY POBIERANIA TREŚCI Z KONTROLKI WEBBROWSER
+        private void ButtonGetContent_Click(object sender, EventArgs e)
+        {
+            string content = GetWebBrowserContent();
+            MessageBox.Show(content);
+        }
+
+        private string GetWebBrowserContent()
+        {
+            if (webBrowser.Document != null)
+            {
+                //return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
+                return webBrowser.Document.Body.InnerText; // Zwraca sam tekst
+            }
+            return string.Empty;
+        }
+
         private void SetTextStyle(string tagName)
         {
             if (webBrowser.Document != null)
             {
                 ExecuteCommand("fontsize", tagName);
             }
-        }
-
-        private void ToolStrip_SizeChanged(object sender, EventArgs e)
-        {
-            AdjustWebBrowserMargin();
         }
 
         private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -138,6 +144,7 @@ namespace BaseForCustomControls.customControls
 
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
+
             if (e.Control)
             {
                 if (e.KeyCode == Keys.A)
@@ -208,6 +215,17 @@ namespace BaseForCustomControls.customControls
                 string script = $"document.body.style.lineHeight = '{lineHeight}';";
                 webBrowser.Document.InvokeScript("eval", new object[] { script });
             }
+        }
+
+
+        private void ButtonUndo_Click(object sender, EventArgs e)
+        {
+            ExecuteCommand("undo");
+        }
+
+        private void ButtonRedo_Click(object sender, EventArgs e)
+        {
+            ExecuteCommand("redo");
         }
 
         private void ButtonHighlightColor_Click(object sender, EventArgs e)
