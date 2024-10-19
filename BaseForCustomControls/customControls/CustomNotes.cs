@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -133,8 +134,8 @@ namespace BaseForCustomControls.customControls
         {
             if (webBrowser.Document != null)
             {
-                //return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
-                return webBrowser.Document.Body.InnerText; // Zwraca sam tekst
+                return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
+                //return webBrowser.Document.Body.InnerText; // Zwraca sam tekst
             }
             return string.Empty;
         }
@@ -154,11 +155,11 @@ namespace BaseForCustomControls.customControls
 
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            //if (e.KeyCode == Keys.Enter)
-            //{
-            //    e.IsInputKey = true; // Upewnij się, że klawisz Enter jest traktowany jako klawisz wejściowy
-            //    HandleEnterKey();
-            //}
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.IsInputKey = true;
+                HandleEnterKey();
+            }
 
 
             if (e.Control)
@@ -218,7 +219,7 @@ namespace BaseForCustomControls.customControls
 
         private async void HandleEnterKey()
         {
-            await Task.Delay(100);
+            await Task.Delay(1);
             ReplaceParagraphsWithBreaks();
         }
 
@@ -229,8 +230,17 @@ namespace BaseForCustomControls.customControls
                 string innerHtml = webBrowser.Document.Body.InnerHtml;
 
                 innerHtml = innerHtml.Replace("</P>", "<BR>").Replace("<P>", "");
-                //innerHtml = innerHtml.Replace("</P>", "").Replace("<P>", "<BR>");
-                //innerHtml = innerHtml.Replace("</P>", "<BR>");
+                innerHtml = innerHtml.Replace("&nbsp;", "").Trim();
+
+                //Dzięki sprawdzaniu tylko ostatnich 12 znaków udaję się wykluczyć podwójne <BR> jednocześnie umożliwiając użytkownikowi zrobienie większego odstępu przy kilkukrotnym Enterze
+                string lastTwelveChars = innerHtml.Length > 12 ? innerHtml.Substring(innerHtml.Length - 12) : innerHtml;
+
+                if (lastTwelveChars.Contains("<BR>\r\n<BR>"))
+                {
+                    innerHtml = innerHtml.Substring(0, innerHtml.Length - 12) +
+                                 Regex.Replace(lastTwelveChars, @"(<BR>\s*){2,}", "<BR>");
+                }
+
                 webBrowser.Document.Body.InnerHtml = innerHtml;
             }
         }
