@@ -88,6 +88,7 @@ namespace BaseForCustomControls.customControls
             buttonHighlightColor.Click += ButtonHighlightColor_Click;
             buttonUndo.Click += ButtonUndo_Click;
             buttonRedo.Click += ButtonRedo_Click;
+            buttonRemoveFormatting.Click += ButtonRemoveFormatting_Click;
 
             //TESTY POBIERANIA TREŚCI Z KONTROLKI WEBBROWSER
             buttonGetContent.Click += ButtonGetContent_Click;
@@ -245,6 +246,13 @@ namespace BaseForCustomControls.customControls
             }
         }
 
+        private void ButtonRemoveFormatting_Click(object sender, EventArgs e)
+        {
+            if (webBrowser.Document != null)
+            {
+                webBrowser.Document.ExecCommand("removeFormat", false, null);
+            }
+        }
 
         private void ButtonLineSpacing_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {

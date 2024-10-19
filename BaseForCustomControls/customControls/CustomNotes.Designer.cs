@@ -58,6 +58,7 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.buttonInsertSeparator = new System.Windows.Forms.ToolStripButton();
             this.buttonGetContent = new System.Windows.Forms.ToolStripButton();
+            this.buttonRemoveFormatting = new System.Windows.Forms.ToolStripButton();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +66,7 @@
             // 
             this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser.Location = new System.Drawing.Point(0, 39);
-            this.webBrowser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.webBrowser.Margin = new System.Windows.Forms.Padding(4);
             this.webBrowser.MinimumSize = new System.Drawing.Size(27, 25);
             this.webBrowser.Name = "webBrowser";
             this.webBrowser.Size = new System.Drawing.Size(928, 464);
@@ -100,7 +101,8 @@
             this.buttonLineSpacing,
             this.toolStripSeparator4,
             this.buttonInsertSeparator,
-            this.buttonGetContent});
+            this.buttonGetContent,
+            this.buttonRemoveFormatting});
             this.toolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
@@ -332,13 +334,22 @@
             this.buttonGetContent.Text = "buttonGetContent";
             this.buttonGetContent.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             // 
+            // buttonRemoveFormatting
+            // 
+            this.buttonRemoveFormatting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonRemoveFormatting.Image = ((System.Drawing.Image)(resources.GetObject("buttonRemoveFormatting.Image")));
+            this.buttonRemoveFormatting.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonRemoveFormatting.Name = "buttonRemoveFormatting";
+            this.buttonRemoveFormatting.Size = new System.Drawing.Size(29, 24);
+            this.buttonRemoveFormatting.Text = "wyczyść formatowanie";
+            // 
             // CustomNotes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.webBrowser);
             this.Controls.Add(this.toolStrip);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CustomNotes";
             this.Size = new System.Drawing.Size(928, 503);
             this.toolStrip.ResumeLayout(false);
@@ -379,5 +390,6 @@
         private System.Windows.Forms.ToolStripButton buttonUndo;
         private System.Windows.Forms.ToolStripButton buttonRedo;
         private System.Windows.Forms.ToolStripButton buttonGetContent;
+        private System.Windows.Forms.ToolStripButton buttonRemoveFormatting;
     }
 }
