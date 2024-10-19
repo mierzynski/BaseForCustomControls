@@ -22,38 +22,49 @@ namespace BaseForCustomControls.customControls
 {
     public partial class CustomNotes : UserControl
     {
-        private bool isDocumentLoaded = false;  // Flaga, żeby śledzić, czy dokument jest załadowany
+        private bool isDocumentLoaded = false;
 
         public CustomNotes()
         {
             InitializeComponent();
             AttachEventHandlers();
-            InitializeWebBrowser();
+            InitializeWebBrowserWithBackground(Color.White);
             InitializeTextStyleDropdown();
         }
 
-        private void InitializeWebBrowser()
+        private void InitializeWebBrowserWithBackground(Color backgroundColor)
         {
             webBrowser.AllowWebBrowserDrop = false;
             webBrowser.IsWebBrowserContextMenuEnabled = false;
             webBrowser.ScriptErrorsSuppressed = true;
             webBrowser.WebBrowserShortcutsEnabled = false;
 
-            webBrowser.DocumentText = @"
-        <html>
-            <head>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        word-wrap: break-word;
-                    }
-                </style>
-            </head>
-            <body contenteditable='true'></body>
-        </html>";
+            string colorHex = ColorTranslator.ToHtml(backgroundColor);
+
+
+            webBrowser.DocumentText = $@"
+                                        <html>
+                                            <head>
+                                                <style>
+                                                    body {{
+                                                        font-family: Arial, sans-serif;
+                                                        word-wrap: break-word;
+                                                        background-color: {colorHex};
+                                                    }}
+                                                    hr {{
+                                                        border: 1px solid red; /* Kolor separatora */
+                                                        height: 1px;
+                                                        background-color: red; /* Alternatywny kolor tła */
+                                                       }}
+                                                </style>
+                                            </head>
+                                            <body contenteditable='true'></body>
+                                        </html>";
+
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.PreviewKeyDown += WebBrowser_PreviewKeyDown;
+
         }
 
         private void AttachEventHandlers()
@@ -139,11 +150,16 @@ namespace BaseForCustomControls.customControls
         private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             isDocumentLoaded = true;
-
         }
 
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
+            //if (e.KeyCode == Keys.Enter)
+            //{
+            //    e.IsInputKey = true; // Upewnij się, że klawisz Enter jest traktowany jako klawisz wejściowy
+            //    HandleEnterKey();
+            //}
+
 
             if (e.Control)
             {
@@ -164,8 +180,18 @@ namespace BaseForCustomControls.customControls
                 }
                 else if (e.KeyCode == Keys.V)
                 {
-                    e.IsInputKey = true;
-                    webBrowser.Document.ExecCommand("Paste", false, null);
+                    if (Clipboard.ContainsImage())
+                    {
+                        MessageBox.Show("Nie można wklejać obrazów. Proszę wkleić tekst.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        e.IsInputKey = true;
+                        return;
+                    }
+                    else
+                    {
+                        webBrowser.Document.ExecCommand("Paste", false, null);
+                        e.IsInputKey = true;
+
+                    }
                 }
                 else if (e.KeyCode == Keys.B)
                 {
@@ -182,6 +208,30 @@ namespace BaseForCustomControls.customControls
                     webBrowser.Document.ExecCommand("Underline", false, null);
                     e.IsInputKey = true;
                 }
+                else if (e.KeyCode == Keys.Z)
+                {
+                    webBrowser.Document.ExecCommand("Undo", false, null);
+                    e.IsInputKey = true;
+                }
+            }
+        }
+
+        private async void HandleEnterKey()
+        {
+            await Task.Delay(100);
+            ReplaceParagraphsWithBreaks();
+        }
+
+        private void ReplaceParagraphsWithBreaks()
+        {
+            if (webBrowser.Document != null)
+            {
+                string innerHtml = webBrowser.Document.Body.InnerHtml;
+
+                innerHtml = innerHtml.Replace("</P>", "<BR>").Replace("<P>", "");
+                //innerHtml = innerHtml.Replace("</P>", "").Replace("<P>", "<BR>");
+                //innerHtml = innerHtml.Replace("</P>", "<BR>");
+                webBrowser.Document.Body.InnerHtml = innerHtml;
             }
         }
 
