@@ -10,14 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-//TO DO
-//6. Kontrolka webBrowser przelicza się dopiero po zmianie rozmiaru okna - naprawić lub zdefiniować stały rozmiar (?)
-//8. Po kliknięciu przycisku Enter, aby przejść do nowej linii odstępy pomiędzy wierszem jest większy niż normalnie
-//(dzieję się tak, ponieważ w kontrolce webBrowser przycisk enter wstawia znacznik <p>, a Shift + Enter wstawia <br>
-
-//UWAGI DANIELA
-//gubi się odstęp pomiędzy wierszami - na razie wystarczy, aby automatycznie ustalił się optymalny odstęp pomiędzy wierszami
-//podczas wklejania treści z obrazkami trzeba usunąć z treści obrazki
 
 namespace BaseForCustomControls.customControls
 {
@@ -42,7 +34,6 @@ namespace BaseForCustomControls.customControls
 
             string colorHex = ColorTranslator.ToHtml(backgroundColor);
 
-
             webBrowser.DocumentText = $@"
                                         <html>
                                             <head>
@@ -57,6 +48,9 @@ namespace BaseForCustomControls.customControls
                                                         height: 1px;
                                                         background-color: red; /* Alternatywny kolor tła */
                                                        }}
+                                                    p {{
+                                                        margin: 0;
+                                                    }}
                                                 </style>
                                             </head>
                                             <body contenteditable='true'></body>
@@ -89,6 +83,7 @@ namespace BaseForCustomControls.customControls
             buttonUndo.Click += ButtonUndo_Click;
             buttonRedo.Click += ButtonRedo_Click;
             buttonRemoveFormatting.Click += ButtonRemoveFormatting_Click;
+            buttonInsertCheckbox.Click += ButtonInsertCheckbox_Click;
 
             //TESTY POBIERANIA TREŚCI Z KONTROLKI WEBBROWSER
             buttonGetContent.Click += ButtonGetContent_Click;
@@ -154,13 +149,14 @@ namespace BaseForCustomControls.customControls
             isDocumentLoaded = true;
         }
 
+
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.IsInputKey = true;
-                HandleEnterKey();
-            }
+            //if (e.KeyCode == Keys.Enter)
+            //{
+            //    e.IsInputKey = true;
+            //    HandleEnterKey();
+            //}
 
 
             if (e.Control)
@@ -218,6 +214,7 @@ namespace BaseForCustomControls.customControls
             }
         }
 
+        //Aby działało usuwanie <p> odkomendować IFa w WebBrowser_PreviewKeyDown
         private async void HandleEnterKey()
         {
             await Task.Delay(1);
@@ -253,6 +250,29 @@ namespace BaseForCustomControls.customControls
                 webBrowser.Document.ExecCommand("removeFormat", false, null);
             }
         }
+
+        private void ButtonInsertCheckbox_Click(object sender, EventArgs e)
+        {
+            if (isDocumentLoaded)
+            {
+                //ExecuteCommand("insertHTML", "<input type='checkbox' />");
+                InsertCheckbox();
+            }
+        }
+
+        private void InsertCheckbox()
+        {
+            if (webBrowser.Document != null)
+            {
+                var selection = webBrowser.Document.ActiveElement;
+
+                if (selection != null)
+                {
+                    selection.InnerHtml += "<input type='checkbox'/>";
+                }
+            }
+        }
+
 
         private void ButtonLineSpacing_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
