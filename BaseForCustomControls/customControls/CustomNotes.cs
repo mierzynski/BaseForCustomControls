@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,6 +25,7 @@ namespace BaseForCustomControls.customControls
             InitializeWebBrowserWithBackground(Color.White);
             InitializeTextStyleDropdown();
         }
+
 
         private void InitializeWebBrowserWithBackground(Color backgroundColor)
         {
@@ -92,23 +94,23 @@ namespace BaseForCustomControls.customControls
         {
             ToolStripMenuItem normalText = new ToolStripMenuItem("Normalny tekst");
             normalText.Font = new Font("Arial", 12);
-            normalText.Click += (sender, e) => SetTextStyle("3");// rozmiar 12
+            normalText.Click += (sender, e) => SetTextStyle("3");
 
             ToolStripMenuItem heading1 = new ToolStripMenuItem("Nagłówek 1");
             heading1.Font = new Font("Arial", 20);
-            heading1.Click += (sender, e) => SetTextStyle("7");// rozmiar 20
+            heading1.Click += (sender, e) => SetTextStyle("7");
 
             ToolStripMenuItem heading2 = new ToolStripMenuItem("Nagłówek 2");
             heading2.Font = new Font("Arial", 18);
-            heading2.Click += (sender, e) => SetTextStyle("6");// rozmiar 18
+            heading2.Click += (sender, e) => SetTextStyle("6");
 
             ToolStripMenuItem heading3 = new ToolStripMenuItem("Nagłówek 3");
             heading3.Font = new Font("Arial", 16);
-            heading3.Click += (sender, e) => SetTextStyle("5");// rozmiar 16
+            heading3.Click += (sender, e) => SetTextStyle("5");
 
             ToolStripMenuItem heading4 = new ToolStripMenuItem("Nagłówek 4");
             heading4.Font = new Font("Arial", 14);
-            heading4.Click += (sender, e) => SetTextStyle("4");// rozmiar 14
+            heading4.Click += (sender, e) => SetTextStyle("4");
 
 
             buttonTextStyles.DropDownItems.Add(normalText);
@@ -146,18 +148,15 @@ namespace BaseForCustomControls.customControls
         private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             isDocumentLoaded = true;
+            if (webBrowser.Document != null && webBrowser.Document.Body != null)
+            {
+                webBrowser.Document.Body.SetAttribute("spellcheck", "true");
+            }
         }
 
 
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            //if (e.KeyCode == Keys.Enter)
-            //{
-            //    e.IsInputKey = true;
-            //    HandleEnterKey();
-            //}
-
-
             if (e.Control)
             {
                 if (e.KeyCode == Keys.A)
@@ -210,35 +209,6 @@ namespace BaseForCustomControls.customControls
                     webBrowser.Document.ExecCommand("Undo", false, null);
                     e.IsInputKey = true;
                 }
-            }
-        }
-
-        //Aby działało usuwanie <p> odkomendować IFa w WebBrowser_PreviewKeyDown
-        private async void HandleEnterKey()
-        {
-            await Task.Delay(1);
-            ReplaceParagraphsWithBreaks();
-        }
-
-        private void ReplaceParagraphsWithBreaks()
-        {
-            if (webBrowser.Document != null)
-            {
-                string innerHtml = webBrowser.Document.Body.InnerHtml;
-
-                innerHtml = innerHtml.Replace("</P>", "<BR>").Replace("<P>", "");
-                innerHtml = innerHtml.Replace("&nbsp;", "").Trim();
-
-                //Dzięki sprawdzaniu tylko ostatnich 12 znaków udaję się wykluczyć podwójne <BR> jednocześnie umożliwiając użytkownikowi zrobienie większego odstępu przy kilkukrotnym Enterze
-                string lastTwelveChars = innerHtml.Length > 12 ? innerHtml.Substring(innerHtml.Length - 12) : innerHtml;
-
-                if (lastTwelveChars.Contains("<BR>\r\n<BR>"))
-                {
-                    innerHtml = innerHtml.Substring(0, innerHtml.Length - 12) +
-                                 Regex.Replace(lastTwelveChars, @"(<BR>\s*){2,}", "<BR>");
-                }
-
-                webBrowser.Document.Body.InnerHtml = innerHtml;
             }
         }
 

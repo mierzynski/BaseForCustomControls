@@ -53,3 +53,8 @@ C:\Users\user\Downloads\git\BaseForCustomControls\BaseForCustomControls\obj\Debu
 C:\Users\user\Downloads\git\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.csproj.CoreCompileInputs.cache
 C:\Users\user\Downloads\git\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.exe
 C:\Users\user\Downloads\git\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForCustomControls.pdb
+C:\Users\dell\Downloads\BaseForCustomControls\BaseForCustomControls\bin\Debug\Hunspellx64.dll
+C:\Users\dell\Downloads\BaseForCustomControls\BaseForCustomControls\bin\Debug\Hunspellx86.dll
+C:\Users\dell\Downloads\BaseForCustomControls\BaseForCustomControls\bin\Debug\NHunspell.dll
+C:\Users\dell\Downloads\BaseForCustomControls\BaseForCustomControls\bin\Debug\NHunspell.pdb
+C:\Users\dell\Downloads\BaseForCustomControls\BaseForCustomControls\obj\Debug\BaseForC.F27CBBB9.Up2Date
