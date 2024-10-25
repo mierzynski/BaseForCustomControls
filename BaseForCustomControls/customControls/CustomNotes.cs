@@ -44,9 +44,8 @@ namespace BaseForCustomControls.customControls
                                                         background-color: {colorHex};
                                                     }}
                                                     hr {{
-                                                        border: 1px solid red; /* Kolor separatora */
+                                                        border: 1px solid black; /* Kolor separatora */
                                                         height: 1px;
-                                                        background-color: red; /* Alternatywny kolor tła */
                                                        }}
                                                     p {{
                                                         margin: 0;
@@ -130,8 +129,8 @@ namespace BaseForCustomControls.customControls
         {
             if (webBrowser.Document != null)
             {
-                return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
-                //return webBrowser.Document.Body.InnerText; // Zwraca sam tekst
+                //return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
+                return webBrowser.Document.Body.InnerText; // Zwraca sam tekst
             }
             return string.Empty;
         }

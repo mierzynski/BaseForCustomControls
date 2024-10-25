@@ -57,9 +57,9 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.buttonInsertSeparator = new System.Windows.Forms.ToolStripButton();
-            this.buttonGetContent = new System.Windows.Forms.ToolStripButton();
             this.buttonRemoveFormatting = new System.Windows.Forms.ToolStripButton();
             this.buttonInsertCheckbox = new System.Windows.Forms.ToolStripButton();
+            this.buttonGetContent = new System.Windows.Forms.ToolStripButton();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -107,7 +107,7 @@
             this.toolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.toolStrip.Padding = new System.Windows.Forms.Padding(5);
             this.toolStrip.Size = new System.Drawing.Size(696, 37);
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "toolStrip1";
@@ -326,15 +326,6 @@
             this.buttonInsertSeparator.Size = new System.Drawing.Size(24, 24);
             this.buttonInsertSeparator.Text = "Separator";
             // 
-            // buttonGetContent
-            // 
-            this.buttonGetContent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.buttonGetContent.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonGetContent.Name = "buttonGetContent";
-            this.buttonGetContent.Size = new System.Drawing.Size(72, 24);
-            this.buttonGetContent.Text = "GetContent";
-            this.buttonGetContent.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
-            // 
             // buttonRemoveFormatting
             // 
             this.buttonRemoveFormatting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -352,10 +343,19 @@
             this.buttonInsertCheckbox.Name = "buttonInsertCheckbox";
             this.buttonInsertCheckbox.Size = new System.Drawing.Size(24, 24);
             // 
+            // buttonGetContent
+            // 
+            this.buttonGetContent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.buttonGetContent.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonGetContent.Name = "buttonGetContent";
+            this.buttonGetContent.Size = new System.Drawing.Size(72, 24);
+            this.buttonGetContent.Text = "GetContent";
+            this.buttonGetContent.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            // 
             // CustomNotes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.webBrowser);
             this.Controls.Add(this.toolStrip);
             this.Name = "CustomNotes";
