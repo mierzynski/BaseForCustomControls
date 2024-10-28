@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 
 
@@ -17,6 +18,7 @@ namespace BaseForCustomControls.customControls
     public partial class CustomNotes : UserControl
     {
         private bool isDocumentLoaded = false;
+        private System.Windows.Forms.Timer undoTimer;
 
         public CustomNotes()
         {
@@ -24,6 +26,9 @@ namespace BaseForCustomControls.customControls
             AttachEventHandlers();
             InitializeWebBrowserWithBackground(Color.White);
             InitializeTextStyleDropdown();
+
+            undoTimer = new Timer();
+            undoTimer.Tick += UndoTimer_Tick;
         }
 
 
@@ -60,7 +65,6 @@ namespace BaseForCustomControls.customControls
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.PreviewKeyDown += WebBrowser_PreviewKeyDown;
-
         }
 
         private void AttachEventHandlers()
@@ -154,9 +158,82 @@ namespace BaseForCustomControls.customControls
             }
         }
 
+        private void UndoTimer_Tick(object sender, EventArgs e)
+        {
+            undoTimer.Stop();
+            ButtonUndo_Click(sender, e);
 
+            if (webBrowser.Document != null)
+            {
+                SendKeys.SendWait("{RIGHT}");
+            }
+        }
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
+            //if ((e.KeyCode == Keys.A) && (e.Alt && e.Control))
+            //{
+            //    string letter = Control.ModifierKeys.HasFlag(Keys.Shift) ? "Ą" : "ą";
+
+            //    if (webBrowser.Document != null && webBrowser.Document.Body != null)
+            //    {
+            //        HtmlElement body = webBrowser.Document.Body;
+            //        body.InnerHtml += letter;
+            //    }
+
+            //    undoTimer.Interval = 1;
+            //    undoTimer.Start();
+
+            //    e.IsInputKey = true;
+            //}
+            if ((e.KeyCode == Keys.A) && (e.Alt && e.Control))
+            {
+                bool isCapsLockOn = Control.IsKeyLocked(Keys.CapsLock);
+                string letter;
+
+                if (Control.ModifierKeys.HasFlag(Keys.Shift) ^ isCapsLockOn) // Użycie XOR
+                {
+                    letter = "Ą";
+                }
+                else
+                {
+                    letter = "ą";
+                }
+
+                if (webBrowser.Document != null && webBrowser.Document.Body != null)
+                {
+                    HtmlElement body = webBrowser.Document.Body;
+                    body.InnerHtml += letter;
+                }
+
+                undoTimer.Interval = 1;
+                undoTimer.Start();
+
+                e.IsInputKey = true;
+            }
+
+            else if ((e.KeyCode == Keys.Z) && (e.Alt && e.Control))
+            {
+                bool isCapsLockOn = Control.IsKeyLocked(Keys.CapsLock);
+                string letter;
+
+                if (Control.ModifierKeys.HasFlag(Keys.Shift) ^ isCapsLockOn) // Użycie XOR
+                {
+                    letter = "Ż";
+                }
+                else
+                {
+                    letter = "ż";
+                }
+
+                if (webBrowser.Document != null && webBrowser.Document.Body != null)
+                {
+                    HtmlElement body = webBrowser.Document.Body;
+                    body.InnerHtml += letter;
+                }
+
+                e.IsInputKey = true;
+            }
+
             if (e.Control)
             {
                 if (e.KeyCode == Keys.A)
