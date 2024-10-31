@@ -12,7 +12,6 @@ using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 
 
-
 namespace BaseForCustomControls.customControls
 {
     public partial class CustomNotes : UserControl
@@ -41,9 +40,11 @@ namespace BaseForCustomControls.customControls
 
             string colorHex = ColorTranslator.ToHtml(backgroundColor);
 
-            webBrowser.DocumentText = $@"
-                                        <html>
+            webBrowser.DocumentText = $@"<!DOCTYPE html>
+                                        <html lang='pl'>
                                             <head>
+                                                <meta charset='utf-8'>
+                                                <meta http-equiv='X-Ua-Compatible' content='IE=edge,chrome=1'>
                                                 <style>
                                                     body {{
                                                         font-family: Arial, sans-serif;
@@ -135,8 +136,8 @@ namespace BaseForCustomControls.customControls
         {
             if (webBrowser.Document != null)
             {
-                //return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
-                return webBrowser.Document.Body.InnerText; // Zwraca sam tekst
+                return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
+                //return webBrowser.Document.Body.InnerText; // Zwraca sam tekst
             }
             return string.Empty;
         }
@@ -158,6 +159,21 @@ namespace BaseForCustomControls.customControls
             }
         }
 
+        private void ClearSelection()
+        {
+            if (webBrowser.Document != null)
+            {
+                var selection = webBrowser.Document.DomDocument as dynamic;
+
+                if (selection?.selection?.type == "Text")
+                {
+                    var range = selection.selection.createRange();
+                    range.collapse(false); // False - na koniec zaznaczenia, True - na początek
+                    range.select();
+                }
+            }
+        }
+
         private void UndoTimer_Tick(object sender, EventArgs e)
         {
             undoTimer.Stop();
@@ -165,26 +181,11 @@ namespace BaseForCustomControls.customControls
 
             if (webBrowser.Document != null)
             {
-                SendKeys.SendWait("{RIGHT}");
+                ClearSelection();
             }
         }
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            //if ((e.KeyCode == Keys.A) && (e.Alt && e.Control))
-            //{
-            //    string letter = Control.ModifierKeys.HasFlag(Keys.Shift) ? "Ą" : "ą";
-
-            //    if (webBrowser.Document != null && webBrowser.Document.Body != null)
-            //    {
-            //        HtmlElement body = webBrowser.Document.Body;
-            //        body.InnerHtml += letter;
-            //    }
-
-            //    undoTimer.Interval = 1;
-            //    undoTimer.Start();
-
-            //    e.IsInputKey = true;
-            //}
             if ((e.KeyCode == Keys.A) && (e.Alt && e.Control))
             {
                 bool isCapsLockOn = Control.IsKeyLocked(Keys.CapsLock);
