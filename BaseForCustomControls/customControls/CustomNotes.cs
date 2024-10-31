@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 
 namespace BaseForCustomControls.customControls
@@ -60,7 +61,7 @@ namespace BaseForCustomControls.customControls
                                                     }}
                                                 </style>
                                             </head>
-                                            <body contenteditable='true'></body>
+                                            <body contenteditable='true' ></body>
                                         </html>";
 
 
@@ -302,7 +303,6 @@ namespace BaseForCustomControls.customControls
         {
             if (isDocumentLoaded)
             {
-                //ExecuteCommand("insertHTML", "<input type='checkbox' />");
                 InsertCheckbox();
             }
         }
@@ -315,7 +315,7 @@ namespace BaseForCustomControls.customControls
 
                 if (selection != null)
                 {
-                    selection.InnerHtml += "<input type='checkbox'/>";
+                    selection.InnerHtml += "<span contenteditable='false'><input type='checkbox' /></span>";
                 }
             }
         }
