@@ -133,11 +133,43 @@ namespace BaseForCustomControls.customControls
         {
             if (webBrowser.Document != null)
             {
-                return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
+                //return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
                 //return webBrowser.Document.Body.InnerText; // Zwraca sam tekst
+
+                string htmlContent = webBrowser.Document.Body.InnerHtml;
+               // string textContent = webBrowser.Document.Body.InnerText;
+                string textContent = ConvertInnerHtmlToText(htmlContent); // Konwersja HTML na tekst
+
+                // Łączenie zawartości z komunikatem
+                return $"Zawartość HTML:\n{htmlContent}\n\nZawartość tekstowa:\n{textContent}";
             }
             return string.Empty;
         }
+
+        private string ConvertInnerHtmlToText(string innerHtml)
+        {
+            // Usunięcie tagów <p> i zamiana </p> na </br>
+            innerHtml = innerHtml.Replace("<p>", "").Replace("</p>", "\n");
+
+            // Zamiana checkboxów na tekst "checkbox"
+            innerHtml = innerHtml.Replace("<input type=\"checkbox\">", "[checkbox] ");
+
+            // Zamiana poziomej linii (separatora) na pustą linię
+            innerHtml = innerHtml.Replace("<hr>", "\n");
+
+            // Usunięcie nadmiarowych pustych linii
+            innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml, @"(<br/>){2,}", "\n");
+
+            // Konwersja do tekstu
+            // Zastępujemy inne tagi HTML (jeśli są) pustym ciągiem
+            innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml, "<[^>]+>", "");
+
+            // Usunięcie nadmiarowych białych znaków
+            //innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml, @"\s+", @"\s").Trim();
+
+            return innerHtml;
+        }
+
 
         private void SetTextStyle(string tagName)
         {
