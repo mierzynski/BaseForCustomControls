@@ -18,7 +18,6 @@ namespace BaseForCustomControls.customControls
     public partial class CustomNotes : UserControl
     {
         private bool isDocumentLoaded = false;
-        private System.Windows.Forms.Timer undoTimer;
 
         public CustomNotes()
         {
@@ -26,9 +25,6 @@ namespace BaseForCustomControls.customControls
             AttachEventHandlers();
             InitializeWebBrowserWithBackground(Color.White);
             InitializeTextStyleDropdown();
-
-            undoTimer = new Timer();
-            undoTimer.Tick += UndoTimer_Tick;
         }
 
 
@@ -159,84 +155,10 @@ namespace BaseForCustomControls.customControls
                 webBrowser.Document.Body.SetAttribute("spellcheck", "true");
             }
         }
-
-        private void ClearSelection()
-        {
-            if (webBrowser.Document != null)
-            {
-                var selection = webBrowser.Document.DomDocument as dynamic;
-
-                if (selection?.selection?.type == "Text")
-                {
-                    var range = selection.selection.createRange();
-                    range.collapse(false); // False - na koniec zaznaczenia, True - na początek
-                    range.select();
-                }
-            }
-        }
-
-        private void UndoTimer_Tick(object sender, EventArgs e)
-        {
-            undoTimer.Stop();
-            ButtonUndo_Click(sender, e);
-
-            if (webBrowser.Document != null)
-            {
-                ClearSelection();
-            }
-        }
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if ((e.KeyCode == Keys.A) && (e.Alt && e.Control))
-            {
-                bool isCapsLockOn = Control.IsKeyLocked(Keys.CapsLock);
-                string letter;
 
-                if (Control.ModifierKeys.HasFlag(Keys.Shift) ^ isCapsLockOn) // Użycie XOR
-                {
-                    letter = "Ą";
-                }
-                else
-                {
-                    letter = "ą";
-                }
-
-                if (webBrowser.Document != null && webBrowser.Document.Body != null)
-                {
-                    HtmlElement body = webBrowser.Document.Body;
-                    body.InnerHtml += letter;
-                }
-
-                undoTimer.Interval = 1;
-                undoTimer.Start();
-
-                e.IsInputKey = true;
-            }
-
-            else if ((e.KeyCode == Keys.Z) && (e.Alt && e.Control))
-            {
-                bool isCapsLockOn = Control.IsKeyLocked(Keys.CapsLock);
-                string letter;
-
-                if (Control.ModifierKeys.HasFlag(Keys.Shift) ^ isCapsLockOn) // Użycie XOR
-                {
-                    letter = "Ż";
-                }
-                else
-                {
-                    letter = "ż";
-                }
-
-                if (webBrowser.Document != null && webBrowser.Document.Body != null)
-                {
-                    HtmlElement body = webBrowser.Document.Body;
-                    body.InnerHtml += letter;
-                }
-
-                e.IsInputKey = true;
-            }
-
-            if (e.Control)
+            if (e.Control && !e.Alt)
             {
                 if (e.KeyCode == Keys.A)
                 {
