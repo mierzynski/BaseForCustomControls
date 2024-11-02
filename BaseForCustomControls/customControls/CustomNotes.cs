@@ -155,10 +155,36 @@ namespace BaseForCustomControls.customControls
             innerHtml = innerHtml.Replace("<input type=\"checkbox\">", "[checkbox] ");
 
             // Zamiana poziomej linii (separatora) na pustą linię
-            innerHtml = innerHtml.Replace("<hr>", "\n");
+            innerHtml = innerHtml.Replace("<hr>", "\n[separator]\n\n");
 
-            // Usunięcie nadmiarowych pustych linii
-            innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml, @"(<br/>){2,}", "\n");
+            // Obsługa listy numerowanej
+            int listItemNumber = 1; // Zmienna pomocnicza do numerowania elementów listy
+            innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml, @"<ol>(.*?)</ol>", match =>
+            {
+                // Wnętrze <ol>...</ol> zastępujemy przetworzonymi elementami <li>
+                string listContent = match.Groups[1].Value;
+                return System.Text.RegularExpressions.Regex.Replace(listContent, @"<li>(.*?)</li>", m =>
+                {
+                    // Zastępujemy <li>...</li> numerowanym elementem
+                    string result = $"{listItemNumber}. {m.Groups[1].Value}\n";
+                    listItemNumber++;
+                    return result;
+                });
+            }, System.Text.RegularExpressions.RegexOptions.Singleline);
+
+            // Reset numeracji list po zakończeniu jednej listy
+            listItemNumber = 1;
+
+            // Obsługa listy punktowanej
+            innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml, @"<ul>(.*?)</ul>", match =>
+            {
+                // Wnętrze <ul>...</ul> przetwarzamy, zamieniając elementy <li> na punktor (•)
+                string listContent = match.Groups[1].Value;
+                return System.Text.RegularExpressions.Regex.Replace(listContent, @"<li>(.*?)</li>", m =>
+                {
+                    return $"• {m.Groups[1].Value}\n";
+                });
+            }, System.Text.RegularExpressions.RegexOptions.Singleline);
 
             // Konwersja do tekstu
             // Zastępujemy inne tagi HTML (jeśli są) pustym ciągiem
@@ -166,6 +192,11 @@ namespace BaseForCustomControls.customControls
 
             // Usunięcie nadmiarowych białych znaków
             //innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml, @"\s+", @"\s").Trim();
+
+            // Usunięcie nadmiarowych \n (zostaje tylko jedna nowa linia)
+            innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml, @"\n{2,}", "\n\n");
+
+            innerHtml = innerHtml.Trim();
 
             return innerHtml;
         }
