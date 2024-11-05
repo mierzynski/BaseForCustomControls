@@ -57,13 +57,14 @@ namespace BaseForCustomControls.customControls
                                                     }}
                                                 </style>
                                             </head>
-                                            <body contenteditable='true' ></body>
+                                            <body contenteditable='true' tabindex='0'></body>
                                         </html>";
 
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.PreviewKeyDown += WebBrowser_PreviewKeyDown;
         }
+
 
         private void AttachEventHandlers()
         {
@@ -133,14 +134,10 @@ namespace BaseForCustomControls.customControls
         {
             if (webBrowser.Document != null)
             {
-                //return webBrowser.Document.Body.InnerHtml; // Zwraca zawartość HTML
-                //return webBrowser.Document.Body.InnerText; // Zwraca sam tekst
-
                 string htmlContent = webBrowser.Document.Body.InnerHtml;
                // string textContent = webBrowser.Document.Body.InnerText;
                 string textContent = ConvertInnerHtmlToText(htmlContent); // Konwersja HTML na tekst
 
-                // Łączenie zawartości z komunikatem
                 return $"Zawartość HTML:\n{htmlContent}\n\nZawartość tekstowa:\n{textContent}";
             }
             return string.Empty;
@@ -274,6 +271,11 @@ namespace BaseForCustomControls.customControls
                     e.IsInputKey = true;
                 }
             }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                webBrowser.Document.ExecCommand("Delete", false, null);
+                e.IsInputKey = true;
+            }
         }
 
         private void ButtonRemoveFormatting_Click(object sender, EventArgs e)
@@ -300,8 +302,22 @@ namespace BaseForCustomControls.customControls
 
                 if (selection != null)
                 {
-                    selection.InnerHtml += "<span contenteditable='false'><input type='checkbox' /></span>";
+                    selection.InnerHtml += "<span contenteditable='false'><input type='checkbox'/></span>";
                 }
+
+                RemoveEmptyParagraphsBeforeCheckbox();
+            }
+        }
+
+        // Metoda pomocnicza do usunięcia <p><br></p> przed checkboxem
+        private void RemoveEmptyParagraphsBeforeCheckbox()
+        {
+            if (webBrowser.Document != null)
+            {
+                string htmlContent = webBrowser.Document.Body.InnerHtml;
+                string updatedHtmlContent = htmlContent.Replace("<p><br></p><span", "<span");
+
+                webBrowser.Document.Body.InnerHtml = updatedHtmlContent;
             }
         }
 
