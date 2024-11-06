@@ -3,11 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\user\\Downloads\\git\\BaseForCustomControls\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{229D99B3-6FA2-4FDF-81B3-512206E27949}|BaseForCustomControls\\BaseForCustomControls.csproj|C:\\Users\\user\\Downloads\\git\\BaseForCustomControls\\baseforcustomcontrols\\customcontrols\\customnotes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{229D99B3-6FA2-4FDF-81B3-512206E27949}|BaseForCustomControls\\BaseForCustomControls.csproj|c:\\users\\user\\downloads\\git\\baseforcustomcontrols\\baseforcustomcontrols\\customcontrols\\customnotes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{229D99B3-6FA2-4FDF-81B3-512206E27949}|BaseForCustomControls\\BaseForCustomControls.csproj|solutionrelative:baseforcustomcontrols\\customcontrols\\customnotes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{229D99B3-6FA2-4FDF-81B3-512206E27949}|BaseForCustomControls\\BaseForCustomControls.csproj|c:\\users\\user\\downloads\\git\\baseforcustomcontrols\\baseforcustomcontrols\\customcontrols\\customnotes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{229D99B3-6FA2-4FDF-81B3-512206E27949}|BaseForCustomControls\\BaseForCustomControls.csproj|C:\\Users\\user\\Downloads\\git\\BaseForCustomControls\\baseforcustomcontrols\\customcontrols\\customnotes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{229D99B3-6FA2-4FDF-81B3-512206E27949}|BaseForCustomControls\\BaseForCustomControls.csproj|solutionrelative:baseforcustomcontrols\\customcontrols\\customnotes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -32,7 +32,7 @@
               "RelativeDocumentMoniker": "BaseForCustomControls\\customControls\\CustomNotes.cs",
               "ToolTip": "C:\\Users\\user\\Downloads\\git\\BaseForCustomControls\\BaseForCustomControls\\customControls\\CustomNotes.cs",
               "RelativeToolTip": "BaseForCustomControls\\customControls\\CustomNotes.cs",
-              "ViewState": "AQIAADcAAAAAAAAAAAAYwEAAAABDAAAA",
+              "ViewState": "AQIAADIBAAAAAAAAAAAiwEcBAAA6AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-16T11:14:17.625Z",
               "EditorCaption": ""
@@ -46,8 +46,7 @@
               "ToolTip": "C:\\Users\\user\\Downloads\\git\\BaseForCustomControls\\BaseForCustomControls\\customControls\\CustomNotes.cs [Projekt]",
               "RelativeToolTip": "BaseForCustomControls\\customControls\\CustomNotes.cs [Projekt]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T10:43:00.55Z",
-              "EditorCaption": " [Projekt]"
+              "WhenOpened": "2024-10-16T10:43:00.55Z"
             },
             {
               "$type": "Document",

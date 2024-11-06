@@ -37,6 +37,17 @@ namespace BaseForCustomControls.customControls
 
             string colorHex = ColorTranslator.ToHtml(backgroundColor);
 
+            // Skrypt JavaScript do przełączania stanu checkboxa po kliknięciu
+            string toggleCheckboxScript = @"
+        function toggleCheckboxState(checkbox) {
+            if (checkbox.hasAttribute('checked')) {
+                checkbox.removeAttribute('checked');
+            } else {
+                checkbox.setAttribute('checked', 'checked');
+            }
+        }
+    ";
+
             webBrowser.DocumentText = $@"<!DOCTYPE html>
                                         <html lang='pl'>
                                             <head>
@@ -56,6 +67,9 @@ namespace BaseForCustomControls.customControls
                                                         margin: 0;
                                                     }}
                                                 </style>
+                                        <script>
+                                            {toggleCheckboxScript}
+                                        </script>
                                             </head>
                                             <body contenteditable='true' tabindex='0'></body>
                                         </html>";
@@ -148,8 +162,10 @@ namespace BaseForCustomControls.customControls
             // Usunięcie tagów <p> i zamiana </p> na </br>
             innerHtml = innerHtml.Replace("<p>", "").Replace("</p>", "\n");
 
-            // Zamiana checkboxów na tekst "checkbox"
-            innerHtml = innerHtml.Replace("<input type=\"checkbox\">", "[checkbox] ");
+            // Znajdywanie i zamiana checkboxów na tekst "[checkbox unchecked]" lub "[checkbox checked]"
+            innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml,
+                @"<input\s+onclick=[""']toggleCheckboxState\(this\)[""']\s+type=[""']checkbox[""']\s*(checked=[""']checked[""'])?\s*/?>",
+                match => match.Groups[1].Success ? "[checkbox checked]" : "[checkbox unchecked]");
 
             // Zamiana poziomej linii (separatora) na pustą linię
             innerHtml = innerHtml.Replace("<hr>", "\n[separator]\n\n");
@@ -299,15 +315,14 @@ namespace BaseForCustomControls.customControls
             if (webBrowser.Document != null)
             {
                 var selection = webBrowser.Document.ActiveElement;
-
                 if (selection != null)
                 {
-                    selection.InnerHtml += "<span contenteditable='false'><input type='checkbox'/></span>";
+                    selection.InnerHtml += "<span contenteditable='false'><input type='checkbox' onclick='toggleCheckboxState(this)'/></span>";
                 }
-
                 RemoveEmptyParagraphsBeforeCheckbox();
             }
         }
+
 
         // Metoda pomocnicza do usunięcia <p><br></p> przed checkboxem
         private void RemoveEmptyParagraphsBeforeCheckbox()
