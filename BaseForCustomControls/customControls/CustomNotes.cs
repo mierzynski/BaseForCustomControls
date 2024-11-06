@@ -49,6 +49,15 @@ namespace BaseForCustomControls.customControls
             }
         }
     ";
+            string setCaretToEnd = @"function setCaretToEnd() {
+                                            var el = document.body;
+                                            var range = document.createRange();
+                                            var selection = window.getSelection();
+                                            range.selectNodeContents(el);
+                                            range.collapse(false);
+                                            selection.removeAllRanges();
+                                            selection.addRange(range);
+                                        }";
 
             webBrowser.DocumentText = $@"<!DOCTYPE html>
                                         <html lang='pl'>
@@ -71,16 +80,7 @@ namespace BaseForCustomControls.customControls
                                                 </style>
                                         <script>
                                             {toggleCheckboxScript}
-
-                                        function setCaretToEnd() {{
-                                            var el = document.body;
-                                            var range = document.createRange();
-                                            var selection = window.getSelection();
-                                            range.selectNodeContents(el);
-                                            range.collapse(false);
-                                            selection.removeAllRanges();
-                                            selection.addRange(range);
-                                        }}
+                                            {setCaretToEnd}                                     
                                         </script>
                                             </head>
                                             <body contenteditable='true' tabindex='0'></body>
