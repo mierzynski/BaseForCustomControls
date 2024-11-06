@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
+using mshtml;
+
 
 
 namespace BaseForCustomControls.customControls
@@ -69,6 +71,16 @@ namespace BaseForCustomControls.customControls
                                                 </style>
                                         <script>
                                             {toggleCheckboxScript}
+
+                                        function setCaretToEnd() {{
+                                            var el = document.body;
+                                            var range = document.createRange();
+                                            var selection = window.getSelection();
+                                            range.selectNodeContents(el);
+                                            range.collapse(false);
+                                            selection.removeAllRanges();
+                                            selection.addRange(range);
+                                        }}
                                         </script>
                                             </head>
                                             <body contenteditable='true' tabindex='0'></body>
@@ -77,8 +89,18 @@ namespace BaseForCustomControls.customControls
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.PreviewKeyDown += WebBrowser_PreviewKeyDown;
-        }
+            webBrowser.DocumentCompleted += (s, e) => {
+                webBrowser.Document.MouseDown += Document_MouseDown;
+            };
 
+        }
+        private void Document_MouseDown(object sender, HtmlElementEventArgs e)
+        {
+            if (webBrowser.Document != null)
+            {
+                webBrowser.Document.InvokeScript("setCaretToEnd");
+            }
+        }
 
         private void AttachEventHandlers()
         {
@@ -165,7 +187,7 @@ namespace BaseForCustomControls.customControls
             // Znajdywanie i zamiana checkboxów na tekst "[checkbox unchecked]" lub "[checkbox checked]"
             innerHtml = System.Text.RegularExpressions.Regex.Replace(innerHtml,
                 @"<input\s+onclick=[""']toggleCheckboxState\(this\)[""']\s+type=[""']checkbox[""']\s*(checked=[""']checked[""'])?\s*/?>",
-                match => match.Groups[1].Success ? "[checkbox checked]" : "[checkbox unchecked]");
+                match => match.Groups[1].Success ? "[checkbox checked] " : "[checkbox unchecked] ");
 
             // Zamiana poziomej linii (separatora) na pustą linię
             innerHtml = innerHtml.Replace("<hr>", "\n[separator]\n\n");
