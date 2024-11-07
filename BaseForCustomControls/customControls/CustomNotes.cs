@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using mshtml;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Xml.Linq;
 
 
 
@@ -41,14 +43,14 @@ namespace BaseForCustomControls.customControls
 
             // Skrypt JavaScript do przełączania stanu checkboxa po kliknięciu
             string toggleCheckboxScript = @"
-        function toggleCheckboxState(checkbox) {
-            if (checkbox.hasAttribute('checked')) {
-                checkbox.removeAttribute('checked');
-            } else {
-                checkbox.setAttribute('checked', 'checked');
-            }
-        }
-    ";
+                    function toggleCheckboxState(checkbox) {
+                        if (checkbox.hasAttribute('checked')) {
+                            checkbox.removeAttribute('checked');
+                        } else {
+                            checkbox.setAttribute('checked', 'checked');
+                        }
+                    }
+                ";
             string setCaretToEnd = @"function setCaretToEnd() {
                                             var el = document.body;
                                             var range = document.createRange();
@@ -58,6 +60,37 @@ namespace BaseForCustomControls.customControls
                                             selection.removeAllRanges();
                                             selection.addRange(range);
                                         }";
+
+            string insertCheckboxAtCaretScript = @"
+                function insertCheckboxAtCaret() {
+                    var checkboxHtml = '<span contenteditable=\'false\'><input type=\'checkbox\' onclick=\'toggleCheckboxState(this)\'/></span>';
+                    var selection = window.getSelection();
+                    if (!selection.rangeCount) return;
+
+                    // Pobieranie zakresu dla aktualnej pozycji kursora
+                    var range = selection.getRangeAt(0);
+                    range.deleteContents();
+
+                    // Tworzenie elementu checkbox
+                    var checkboxNode = document.createElement('div');
+                    checkboxNode.innerHTML = checkboxHtml;
+                    var checkboxElement = checkboxNode.firstChild;
+
+                    // Wstawienie checkboxa w miejsce kursora
+                    range.insertNode(checkboxElement);
+
+                    // Dodanie pustego węzła tekstowego po checkboxie
+                    var spaceNode = document.createTextNode(' ');
+                    checkboxElement.parentNode.insertBefore(spaceNode, checkboxElement.nextSibling);
+
+                    // Przesunięcie kursora za checkbox
+                    range.setStartAfter(spaceNode);
+                    range.setEndAfter(spaceNode);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                }
+            ";
+
 
             webBrowser.DocumentText = $@"<!DOCTYPE html>
                                         <html lang='pl'>
@@ -80,7 +113,8 @@ namespace BaseForCustomControls.customControls
                                                 </style>
                                         <script>
                                             {toggleCheckboxScript}
-                                            {setCaretToEnd}                                     
+                                            {setCaretToEnd}
+                                            {insertCheckboxAtCaretScript}
                                         </script>
                                             </head>
                                             <body contenteditable='true' tabindex='0'></body>
@@ -336,12 +370,7 @@ namespace BaseForCustomControls.customControls
         {
             if (webBrowser.Document != null)
             {
-                var selection = webBrowser.Document.ActiveElement;
-                if (selection != null)
-                {
-                    selection.InnerHtml += "<span contenteditable='false'><input type='checkbox' onclick='toggleCheckboxState(this)'/></span>";
-                }
-                RemoveEmptyParagraphsBeforeCheckbox();
+                webBrowser.Document.InvokeScript("insertCheckboxAtCaret");
             }
         }
 
