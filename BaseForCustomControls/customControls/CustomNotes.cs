@@ -14,6 +14,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using mshtml;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Xml.Linq;
+using System.Diagnostics;
+using static System.Windows.Forms.LinkLabel;
 
 
 
@@ -38,6 +40,7 @@ namespace BaseForCustomControls.customControls
             webBrowser.IsWebBrowserContextMenuEnabled = false;
             webBrowser.ScriptErrorsSuppressed = true;
             webBrowser.WebBrowserShortcutsEnabled = false;
+            webBrowser.AllowNavigation = true; // Automatyczne otwieranie linków
 
             string colorHex = ColorTranslator.ToHtml(backgroundColor);
 
@@ -91,6 +94,14 @@ namespace BaseForCustomControls.customControls
                 }
             ";
 
+            string setLinksNonEditableScript = @"
+    function setLinksNonEditable() {
+        var links = document.querySelectorAll('a');
+        links.forEach(function(link) {
+            link.setAttribute('contenteditable', 'false');
+        });
+    }
+";
 
             webBrowser.DocumentText = $@"<!DOCTYPE html>
                                         <html lang='pl'>
@@ -104,8 +115,7 @@ namespace BaseForCustomControls.customControls
                                                         background-color: {colorHex};
                                                     }}
                                                     hr {{
-                                                        border: 1px solid black; /* Kolor separatora */
-                                                        height: 1px;
+                                                        border: 2px solid black; /* Kolor separatora */;
                                                        }}
                                                     p {{
                                                         margin: 0;
@@ -123,11 +133,27 @@ namespace BaseForCustomControls.customControls
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.PreviewKeyDown += WebBrowser_PreviewKeyDown;
+            webBrowser.Navigating += WebBrowser_Navigating;
             webBrowser.DocumentCompleted += (s, e) => {
                 webBrowser.Document.MouseDown += Document_MouseDown;
             };
 
         }
+
+        private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            if (e.Url.Scheme == "http" || e.Url.Scheme == "https")
+            {
+                e.Cancel = true;
+                Process.Start(new ProcessStartInfo(e.Url.AbsoluteUri) { UseShellExecute = true });
+            }
+            else if (e.Url.Scheme == "mailto")
+            {
+                e.Cancel = true;
+                Process.Start(new ProcessStartInfo(e.Url.AbsoluteUri) { UseShellExecute = true });
+            }
+        }
+
         private void Document_MouseDown(object sender, HtmlElementEventArgs e)
         {
             if (webBrowser.Document != null)
