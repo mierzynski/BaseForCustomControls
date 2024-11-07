@@ -40,7 +40,7 @@ namespace BaseForCustomControls.customControls
             webBrowser.IsWebBrowserContextMenuEnabled = false;
             webBrowser.ScriptErrorsSuppressed = true;
             webBrowser.WebBrowserShortcutsEnabled = false;
-            webBrowser.AllowNavigation = true; // Automatyczne otwieranie linków
+            webBrowser.AllowNavigation = true;
 
             string colorHex = ColorTranslator.ToHtml(backgroundColor);
 
@@ -94,14 +94,7 @@ namespace BaseForCustomControls.customControls
                 }
             ";
 
-            string setLinksNonEditableScript = @"
-    function setLinksNonEditable() {
-        var links = document.querySelectorAll('a');
-        links.forEach(function(link) {
-            link.setAttribute('contenteditable', 'false');
-        });
-    }
-";
+
 
             webBrowser.DocumentText = $@"<!DOCTYPE html>
                                         <html lang='pl'>
@@ -133,25 +126,10 @@ namespace BaseForCustomControls.customControls
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.PreviewKeyDown += WebBrowser_PreviewKeyDown;
-            webBrowser.Navigating += WebBrowser_Navigating;
             webBrowser.DocumentCompleted += (s, e) => {
                 webBrowser.Document.MouseDown += Document_MouseDown;
             };
 
-        }
-
-        private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
-        {
-            if (e.Url.Scheme == "http" || e.Url.Scheme == "https")
-            {
-                e.Cancel = true;
-                Process.Start(new ProcessStartInfo(e.Url.AbsoluteUri) { UseShellExecute = true });
-            }
-            else if (e.Url.Scheme == "mailto")
-            {
-                e.Cancel = true;
-                Process.Start(new ProcessStartInfo(e.Url.AbsoluteUri) { UseShellExecute = true });
-            }
         }
 
         private void Document_MouseDown(object sender, HtmlElementEventArgs e)
