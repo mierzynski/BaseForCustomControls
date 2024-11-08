@@ -21,6 +21,7 @@ using static System.Windows.Forms.LinkLabel;
 
 namespace BaseForCustomControls.customControls
 {
+    [System.Runtime.InteropServices.ComVisible(true)]
     public partial class CustomNotes : UserControl
     {
         private bool isDocumentLoaded = false;
@@ -41,10 +42,10 @@ namespace BaseForCustomControls.customControls
             webBrowser.ScriptErrorsSuppressed = true;
             webBrowser.WebBrowserShortcutsEnabled = false;
             webBrowser.AllowNavigation = true;
+            webBrowser.ObjectForScripting = this;
 
             string colorHex = ColorTranslator.ToHtml(backgroundColor);
 
-            // Skrypt JavaScript do przełączania stanu checkboxa po kliknięciu
             string toggleCheckboxScript = @"
                     function toggleCheckboxState(checkbox) {
                         if (checkbox.hasAttribute('checked')) {
@@ -95,40 +96,25 @@ namespace BaseForCustomControls.customControls
                 }
             ";
 
-            //string initializeContentScript = @"
-            //        document.addEventListener('DOMContentLoaded', function() {
-            //            var editorBody = document.body;
-
-            //            // Ustawienie początkowej treści jako zero-width space
-            //            editorBody.innerHTML = '&#8203;';
-
-            //            // Funkcja czyszcząca pusty <p> na początku, jeśli istnieje
-            //            editorBody.addEventListener('input', function() {
-            //                var paragraphs = editorBody.querySelectorAll('p');
-            //                if (paragraphs.length > 0 && paragraphs[0].innerHTML.trim() === '') {
-            //                    paragraphs[0].remove();
-            //                }
-            //            });
-            //        });
-            //    ";
-
+            // Skrypt do inicjowania treści, zarządzania kursorem i obsługi linków
             string initializeContentScript = @"
-        document.addEventListener('DOMContentLoaded', function() {
-            var editorBody = document.body;
-            editorBody.innerHTML = '&#8203;'; // Ustawienie początkowej treści
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var editorBody = document.body;
+                                editorBody.innerHTML = '&#8203;'; // Ustawienie początkowej treści
 
-            // Obsługa kliknięć na linki w obrębie contenteditable
-            editorBody.addEventListener('click', function(e) {
-                if (e.target.tagName === 'A') {
-                    e.preventDefault();
-                    var href = e.target.getAttribute('href');
-                    if (href) {
-                        window.open(href, '_blank');
-                    }
-                }
-            });
-        });
-    ";
+                                // Obsługa kliknięć na linki w obrębie contenteditable
+                                editorBody.addEventListener('click', function(e) {
+                                    if (e.target.tagName === 'A') {
+                                        e.preventDefault();
+                                        var href = e.target.getAttribute('href');
+                                        if (href) {
+                                            window.external.OpenLinkInDefaultBrowser(href);
+                                        }
+                                    }
+                                });
+                            });
+                        ";
+
 
 
 
@@ -149,6 +135,18 @@ namespace BaseForCustomControls.customControls
                                                     p {{
                                                         margin: 0;
                                                     }}
+                                                    a {{
+                                                        text-decoration: none;
+                                                        color: #007bff;
+                                                        transition: transform 0.1s ease;
+                                                    }}
+                                                    a:hover {{
+                                                        color: #0056b3;
+                                                    }}
+                                                    a:active {{
+                                                        transform: scale(0.90);
+                                                        color: #ff5733;
+                                                    }}
                                                 </style>
                                         <script>
                                             {toggleCheckboxScript}
@@ -167,6 +165,14 @@ namespace BaseForCustomControls.customControls
                 webBrowser.Document.MouseDown += Document_MouseDown;
             };
 
+        }
+        public void OpenLinkInDefaultBrowser(string url)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true  // Otwiera w domyślnej przeglądarce
+            });
         }
 
         private void Document_MouseDown(object sender, HtmlElementEventArgs e)
