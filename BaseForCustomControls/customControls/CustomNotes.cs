@@ -54,6 +54,7 @@ namespace BaseForCustomControls.customControls
                         }
                     }
                 ";
+
             string setCaretToEnd = @"function setCaretToEnd() {
                                             var el = document.body;
                                             var range = document.createRange();
@@ -94,6 +95,23 @@ namespace BaseForCustomControls.customControls
                 }
             ";
 
+            string initializeContentScript = @"
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var editorBody = document.body;
+
+                        // Ustawienie początkowej treści jako zero-width space
+                        editorBody.innerHTML = '&#8203;';
+
+                        // Funkcja czyszcząca pusty <p> na początku, jeśli istnieje
+                        editorBody.addEventListener('input', function() {
+                            var paragraphs = editorBody.querySelectorAll('p');
+                            if (paragraphs.length > 0 && paragraphs[0].innerHTML.trim() === '') {
+                                paragraphs[0].remove();
+                            }
+                        });
+                    });
+                ";
+
 
 
             webBrowser.DocumentText = $@"<!DOCTYPE html>
@@ -118,6 +136,7 @@ namespace BaseForCustomControls.customControls
                                             {toggleCheckboxScript}
                                             {setCaretToEnd}
                                             {insertCheckboxAtCaretScript}
+                                            {initializeContentScript}
                                         </script>
                                             </head>
                                             <body contenteditable='true' tabindex='0'></body>
