@@ -95,22 +95,40 @@ namespace BaseForCustomControls.customControls
                 }
             ";
 
+            //string initializeContentScript = @"
+            //        document.addEventListener('DOMContentLoaded', function() {
+            //            var editorBody = document.body;
+
+            //            // Ustawienie początkowej treści jako zero-width space
+            //            editorBody.innerHTML = '&#8203;';
+
+            //            // Funkcja czyszcząca pusty <p> na początku, jeśli istnieje
+            //            editorBody.addEventListener('input', function() {
+            //                var paragraphs = editorBody.querySelectorAll('p');
+            //                if (paragraphs.length > 0 && paragraphs[0].innerHTML.trim() === '') {
+            //                    paragraphs[0].remove();
+            //                }
+            //            });
+            //        });
+            //    ";
+
             string initializeContentScript = @"
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var editorBody = document.body;
+        document.addEventListener('DOMContentLoaded', function() {
+            var editorBody = document.body;
+            editorBody.innerHTML = '&#8203;'; // Ustawienie początkowej treści
 
-                        // Ustawienie początkowej treści jako zero-width space
-                        editorBody.innerHTML = '&#8203;';
-
-                        // Funkcja czyszcząca pusty <p> na początku, jeśli istnieje
-                        editorBody.addEventListener('input', function() {
-                            var paragraphs = editorBody.querySelectorAll('p');
-                            if (paragraphs.length > 0 && paragraphs[0].innerHTML.trim() === '') {
-                                paragraphs[0].remove();
-                            }
-                        });
-                    });
-                ";
+            // Obsługa kliknięć na linki w obrębie contenteditable
+            editorBody.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    var href = e.target.getAttribute('href');
+                    if (href) {
+                        window.open(href, '_blank');
+                    }
+                }
+            });
+        });
+    ";
 
 
 
