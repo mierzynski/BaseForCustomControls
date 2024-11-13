@@ -21,7 +21,7 @@ using static System.Windows.Forms.LinkLabel;
 
 namespace BaseForCustomControls.customControls
 {
-    [System.Runtime.InteropServices.ComVisible(true)]
+    [System.Runtime.InteropServices.ComVisible(true)] //Potrzebne, aby JS mógł wywoływać metody C#
     public partial class CustomNotes : UserControl
     {
         private bool isDocumentLoaded = false;
@@ -56,16 +56,6 @@ namespace BaseForCustomControls.customControls
                     }
                 ";
 
-            string setCaretToEnd = @"function setCaretToEnd() {
-                                            var el = document.body;
-                                            var range = document.createRange();
-                                            var selection = window.getSelection();
-                                            range.selectNodeContents(el);
-                                            range.collapse(false);
-                                            selection.removeAllRanges();
-                                            selection.addRange(range);
-                                        }";
-
             string insertCheckboxAtCaretScript = @"
                 function insertCheckboxAtCaret() {
                     var checkboxHtml = '<span contenteditable=\'false\'><input type=\'checkbox\' onclick=\'toggleCheckboxState(this)\'/></span>';
@@ -96,24 +86,72 @@ namespace BaseForCustomControls.customControls
                 }
             ";
 
-            // Skrypt do inicjowania treści, zarządzania kursorem i obsługi linków
             string initializeContentScript = @"
-                            document.addEventListener('DOMContentLoaded', function() {
-                                var editorBody = document.body;
-                                editorBody.innerHTML = '&#8203;'; // Ustawienie początkowej treści
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var editorBody = document.body;
 
-                                // Obsługa kliknięć na linki w obrębie contenteditable
-                                editorBody.addEventListener('click', function(e) {
-                                    if (e.target.tagName === 'A') {
-                                        e.preventDefault();
-                                        var href = e.target.getAttribute('href');
-                                        if (href) {
-                                            window.external.OpenLinkInDefaultBrowser(href);
-                                        }
+                            // Ustawienie początkowej treści z wieloma <br> na początku
+                            editorBody.innerHTML = '<p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>';
+
+                            // Funkcja do zapamiętania aktualnej pozycji kursora
+                            function saveCursorPosition() {
+                                var selection = window.getSelection();
+                                return selection.rangeCount > 0 ? selection.getRangeAt(0).cloneRange() : null;
+                            }
+
+                            // Funkcja do przywrócenia pozycji kursora
+                            function restoreCursorPosition(savedRange) {
+                                if (savedRange) {
+                                    var selection = window.getSelection();
+                                    selection.removeAllRanges();
+                                    selection.addRange(savedRange);
+                                }
+                            }
+
+                            // Funkcja, która ustawia kursor na początek dokumentu po załadowaniu
+                            function setCursorToStart() {
+                                var selection = window.getSelection();
+                                var range = document.createRange();
+                                var firstBr = editorBody.querySelector('br');
+            
+                                if (firstBr) {
+                                    range.setStartBefore(firstBr);
+                                    range.setEndBefore(firstBr);
+                                    selection.removeAllRanges();
+                                    selection.addRange(range);
+                                }
+                            }
+
+                            // Ustawienie kursora na początek dokumentu po załadowaniu
+                            setCursorToStart();
+
+                            // Obsługa mousedown na linkach
+                            editorBody.addEventListener('mousedown', function(e) {
+                                if (e.target.tagName === 'A') {
+                                    e.preventDefault();
+
+                                    // Symulacja przytrzymania klawisza Ctrl podczas kliknięcia
+                                    e.ctrlKey = true;
+
+                                    // Zapisanie pozycji kursora
+                                    var savedRange = saveCursorPosition();
+
+                                    // Wywołanie otwarcia linku w przeglądarce
+                                    var href = e.target.getAttribute('href');
+                                    if (href) {
+                                        window.external.OpenLinkInDefaultBrowser(href);
                                     }
-                                });
+
+                                    // Przywrócenie pozycji kursora
+                                    restoreCursorPosition(savedRange);
+                                }
                             });
-                        ";
+                        });
+                    ";
+
+
+
+
 
 
 
@@ -130,7 +168,7 @@ namespace BaseForCustomControls.customControls
                                                         background-color: {colorHex};
                                                     }}
                                                     hr {{
-                                                        border: 2px solid black; /* Kolor separatora */;
+                                                        border: 1px solid #2d373d; /* Kolor separatora */;
                                                        }}
                                                     p {{
                                                         margin: 0;
@@ -150,7 +188,6 @@ namespace BaseForCustomControls.customControls
                                                 </style>
                                         <script>
                                             {toggleCheckboxScript}
-                                            {setCaretToEnd}
                                             {insertCheckboxAtCaretScript}
                                             {initializeContentScript}
                                         </script>
@@ -161,9 +198,6 @@ namespace BaseForCustomControls.customControls
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.PreviewKeyDown += WebBrowser_PreviewKeyDown;
-            webBrowser.DocumentCompleted += (s, e) => {
-                webBrowser.Document.MouseDown += Document_MouseDown;
-            };
 
         }
         public void OpenLinkInDefaultBrowser(string url)
@@ -173,14 +207,6 @@ namespace BaseForCustomControls.customControls
                 FileName = url,
                 UseShellExecute = true  // Otwiera w domyślnej przeglądarce
             });
-        }
-
-        private void Document_MouseDown(object sender, HtmlElementEventArgs e)
-        {
-            if (webBrowser.Document != null)
-            {
-                webBrowser.Document.InvokeScript("setCaretToEnd");
-            }
         }
 
         private void AttachEventHandlers()
@@ -336,7 +362,7 @@ namespace BaseForCustomControls.customControls
         }
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-
+            // Obsługa skrótów z klawiszem Ctrl
             if (e.Control && !e.Alt)
             {
                 if (e.KeyCode == Keys.A)
@@ -366,7 +392,6 @@ namespace BaseForCustomControls.customControls
                     {
                         webBrowser.Document.ExecCommand("Paste", false, null);
                         e.IsInputKey = true;
-
                     }
                 }
                 else if (e.KeyCode == Keys.B)
@@ -390,12 +415,28 @@ namespace BaseForCustomControls.customControls
                     e.IsInputKey = true;
                 }
             }
+            // Obsługa skrótu Shift + Insert do wklejania
+            else if (e.Shift && e.KeyCode == Keys.Insert)
+            {
+                if (Clipboard.ContainsImage())
+                {
+                    MessageBox.Show("Nie można wklejać obrazów. Proszę wkleić tekst.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    e.IsInputKey = true;
+                }
+                else
+                {
+                    webBrowser.Document.ExecCommand("Paste", false, null);
+                    e.IsInputKey = true;
+                }
+            }
+            // Obsługa klawisza Delete
             else if (e.KeyCode == Keys.Delete)
             {
                 webBrowser.Document.ExecCommand("Delete", false, null);
                 e.IsInputKey = true;
             }
         }
+
 
         private void ButtonRemoveFormatting_Click(object sender, EventArgs e)
         {
